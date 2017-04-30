@@ -1,0 +1,28 @@
+{
+  "name": "gun-ui-slider",
+  "description": "Part of the GunUi elements",
+  "main": "gun-ui-slider.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.4.0",
+    "gun-ui-mixin": "Stefdv/gun-ui-mixin",
+    "paper-slider": "^1.0.15"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "web-component-tester": "^6.0.0-prerelease.5",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0",
+    "gunui-demo-app": "Stefdv/gunui-demo-app"
+  },
+  "homepage": "https://github.com/Stefdv/gun-ui-slider",
+  "_release": "de0d69f177",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "de0d69f17765a6d4ed86e4813965589aab38f383"
+  },
+  "_source": "https://github.com/Stefdv/gun-ui-slider.git",
+  "_target": "master",
+  "_originalSource": "Stefdv/gun-ui-slider",
+  "_direct": true
+}
