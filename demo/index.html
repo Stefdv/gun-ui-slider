@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  <script src="https://rawgit.com/amark/gun/master/gun.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>gun-ui-slider</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script>
+      window.Polymer = window.Polymer || {};
+      window.Polymer.dom = 'shadow';
+      localStorage.clear()
+    </script>
+    <link rel="import" href="../../polymer/polymer.html">
+    <link rel="import" href="../../gunui-demo-app/gunui-demo-app.html">
+    <link rel="import" href="../../gunui-demo-app/demo/demo-imports.html">
+    <link rel="import" href="../gun-ui-slider.html">
+    <style is="custom-style" include="demo-shared-styles">
+          :root{ }
+          body{
+            overflow:hidden;
+          }
+          gun-ui-input {
+            margin: 0 15px;
+          }
+          [no-label-float] {margin-top: 20px;}
+    </style>
+    
+    
+  </head>
+  <body>
+  <prism-highlighter></prism-highlighter>
+    <style is="custom-style" include="demo-shared-styles">
+         .tiny {
+            display:inline-block;
+            width:120px;
+
+         }
+          gun-ui-slider.grade {
+                --gun-ui-slider-secondary-color: var(--paper-red-200);
+              }
+    </style>
+
+    <gunui-demo-app>
+      <!-- create pages -->
+      <div class="vertical-section centered" id="start">
+         <h3>What it does</h3>
+         <div class="row"><span>It's a </span><gun-ui-slider class="tiny" soul="demo" prop="slider" subscribe instant></gun-ui-slider><span>...that syncs with Gun<span></div>
+        
+      </div>
+
+      <div class="vertical-section centered" id="instant">
+        <div class="demo-header">
+          <h3>'Instant'</h3>
+          <p>Both <prism-demo inline code="<gun-ui-slider>" lang="html"></prism-demo> elements are subscribed to the same property<br>( and the one above )</p>
+           <blockquote>
+           The attributes <span class="attribute">soul</span> and <span class="attribute">prop</span> will link the element to a data-point.<br>
+           The attribute <span class="attribute">subscribe</span> is what makes it 'Gun-aware'
+           you can read more about it <demo-link href="docs/docsmain.html?gunui#gun-awareness">here</demo-link>
+         </blockquote> 
+          <p>The second <prism-demo inline code="<gun-ui-slider>" lang="html"></prism-demo> has the attribute "<span class="attribute">instant</span>" ( and the one above ), this means it will update Gun while you drag the knob. ( The other one only updates when you release the knob )</p>
+        </div>
+        <demo-box>
+          <template>
+            <gun-ui-slider soul="demo" prop="slider" subscribe instant></gun-ui-slider>
+            <gun-ui-slider soul="demo" prop="slider" subscribe></gun-ui-slider>
+          </template>
+        </demo-box>
+      </div>
+
+      <div class="vertical-section centered" id="instant">
+        <div class="demo-header">
+          <h3>gun-ui-sliders can have values, secondary progress values, or be disabled.</h3>
+        </div>
+        <demo-box>
+          <template>
+            <gun-ui-slider soul="demo" prop="slider"></gun-ui-slider>
+            <gun-ui-slider soul="demo" prop="slider"></gun-ui-slider>
+            <gun-ui-slider soul="demo" prop="slider" secondary-progress="85"></gun-ui-slider>
+            <gun-ui-slider soul="demo" prop="slider" disabled ></gun-ui-slider>
+        </template>
+        </demo-box>
+      </div>
+
+       <div class="vertical-section centered" id="instant">
+          <h3>They can be editable, and styled using custom properties</h3>
+          <demo-box>
+          <template>
+           <style is="custom-style">
+          gun-ui-slider.red {
+            width:300px;
+            --gun-ui-slider-knob-color: var(--paper-red-500);
+            --gun-ui-slider-active-color: var(--paper-red-500);
+          }
+          gun-ui-slider.green {
+            --gun-ui-slider-knob-color: var(--paper-green-500);
+            --gun-ui-slider-active-color: var(--paper-green-500);
+          }
+          gun-ui-slider.blue {
+            --gun-ui-slider-knob-color: var(--paper-light-blue-500);
+            --gun-ui-slider-active-color: var(--paper-light-blue-500);
+            --gun-ui-slider-secondary-color: var(--paper-green-200);
+          }
+         
+        </style>
+            <gun-ui-slider class="red" editable soul="demo" prop="slider" subscribe></gun-ui-slider>
+            <gun-ui-slider class="green" max="250"  step="50" soul="demo" prop="slider-250" subscribe></gun-ui-slider>
+            <gun-ui-slider class="blue" soul="demo" prop="slider" secondary-progress="85" subscibe></gun-ui-slider>
+            <gun-ui-slider soul="demo" prop="slider" disabled subscribe></gun-ui-slider>
+        </template>
+        </demo-box>
+       </div>
+       <style>
+         
+       </style>
+        <div class="vertical-section centered" id="instant">
+          <h3>The pins can be labelled, a secondary progress can be set</h3>
+          <!-- 
+          the combination of  <div class='bind-demo'> and <demo-box no-render class="binder"> 
+          gives you a pseudo demo-box that allows binding.
+          add a script tag in your page 
+          <script>
+           var app = document.querySelector('#templateId');
+
+          </script>
+          now 'app' acts like a polymer element
+          -->
+          <div class='bind-demo'>
+            <template is="dom-bind" id="pins-demo">
+              <div>Brightness</div><br>
+              <gun-ui-slider pin soul="demo" prop="brightness"></gun-ui-slider>
+              <div>Ratings: <span id="ratingsLabel" class="caption">[[rate]]</span></div><br>
+              <gun-ui-slider id="ratings" pin snaps max="10"  step="1" soul="demo" prop="ratings" value="{{rate}}"></gun-ui-slider>
+              <div>Grade: <span id="gradeLabel" class="caption">{{_getGrade(grade)}}</span></div><br>
+              <gun-ui-slider class="grade" pin secondary-progress="70" soul="demo" prop="grade" value="{{grade}}"></gun-ui-slider>
+            </template>
+          </div>
+          <demo-box no-render class="binder">
+          <template>
+            <style is="custom-style">
+              span { padding-left: 12px; color: #a0a0a0;}
+              gun-ui-slider.grade {
+                --gun-ui-slider-secondary-color: var(--paper-red-200);
+              }
+            </style>
+
+            <div>Brightness</div><br>
+            <gun-ui-slider pin soul="demo" prop="brightness"></gun-ui-slider>
+
+            <div>Ratings: <span>[[rate]]</span></div><br>
+            <gun-ui-slider value="{{rate}}" pin snaps max="10" max-markers="10" step="1" soul="demo" prop="ratings" ></gun-ui-slider>
+
+            <div>Grade: <span>{{_getGrade(grade)}}</span></div><br>
+            <!-- use "secondary-progress" to set a treshold -->
+            <gun-ui-slider class="grade" value="{{grade}}" pin secondary-progress="[[minGrade]]" soul="demo" prop="grade" ></gun-ui-slider>
+
+            <!-- in your own element or app-->
+
+            <script>
+              Polymer({
+                is: 'my-element',
+                properties: {
+                  ...
+                  minGrade:{type:number,value:70},
+                  grade:Number,
+                  rate:Number,
+                  ...
+                },
+                ...
+                _getGrade(grade){
+                   return grade + (grade < this.minGrade ? " (Fail)" : " (Pass)")
+                },
+                ...
+              })
+            </script>
+          </template>
+          </demo-box>
+        </div>
+
+     
+      </div>
+    </gunui-demo-app>
+      <script>
+      var app = document.querySelector('#pins-demo');
+      app._getGrade = function(grade){
+        return grade + (grade < 70 ? " (Fail)" : " (Pass)")
+      }
+     
+    </script>
+  </body>
+
+</html>

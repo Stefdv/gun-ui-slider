@@ -1,0 +1,136 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../gun-ui-mixin/gun-ui-mixin.html">
+<link rel="import" href="../paper-slider/paper-slider.html">
+<!--
+`gun-ui-slider`
+Part of the GunUi elements
+
+@demo demo/index.html
+-->
+
+<dom-module id="gun-ui-slider">
+  <template>
+    <style>
+      :host {display:block;}
+      paper-slider {width:100%;}
+      paper-slider {
+        --paper-slider-container-color:var(--gun-ui-slider-container-color);
+        --paper-slider-bar-color:var(--gun-ui-slider-bar-color);
+        --paper-slider-active-color:var(--gun-ui-slider-active-color);
+        --paper-slider-secondary-color:var(--gun-ui-slider-secondary-color);
+        --paper-slider-knob-color:var(--gun-ui-slider-knob-color);
+        --paper-slider-disabled-knob-color:var(--gun-ui-slider-disabled-knob-color);
+        --paper-slider-pin-color:var(--gun-ui-slider-pin-color);
+        --paper-slider-font-color:var(--gun-ui-slider-font-color);
+        --paper-slider-markers-color:var(--gun-ui-slider-markers-color);
+        --paper-slider-disabled-active-color:var(--gun-ui-slider-disabled-active-color);
+        --paper-slider-disabled-secondary-color:var(--gun-ui-slider-disabled-secondary-color);
+        --paper-slider-knob-start-color:var(--gun-ui-slider-knob-start-color);
+        --paper-slider-knob-start-border-color:var(--gun-ui-slider-knob-start-border-color);
+        --paper-slider-pin-start-color:var(--gun-ui-slider-pin-start-color);
+        --paper-slider-height:var(--gun-ui-slider-height);
+        --paper-slider-input:var(--gun-ui-slider-input);
+      }
+    </style>
+      <paper-slider 
+        min="[[min]]" 
+        max="[[max]]" 
+        value="{{value}}" 
+        on-change="_userAction" 
+        on-immediate-value-changed="_dragging"
+        expand ="[[expand]]"
+        editable="[[editable]]"
+        max-markers="[[maxMarkers]]"
+        noink="[[noink]]"
+        required="[[required]]"
+        snaps="[[snaps]]"
+        step="[[step]]"
+        secondary-progress="{{secondaryProgress}}"
+        pin="[[pin]]">
+      </paper-slider>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'gun-ui-slider',
+
+      properties: {
+        /*
+        * slider min value default = 0
+        */
+        min: {type: Number,value: 0},
+        /*
+        * slider max value default = 100
+        */
+        max: {type: Number,value: 100},
+
+        maxMarkers:{ type:Number,value:0},
+        /*
+        * enlarge the slider knob when dragging
+        * ( if pin==true this has no effect)
+        */
+        expand: { type: Boolean,value: false},
+        /**
+         * an input field is shown where the value can be edited
+         */
+        editable: { type: Boolean,value: false},
+        /**
+         * set 'ink'
+         */
+        noink:{ type: Boolean,value: false},
+        /*
+        * show the value on the slider knob when dragging
+        */
+        pin: {type: Boolean,value: false},
+        /*
+        * slider value
+        */
+        required:{ type: Boolean,value: false},
+        snaps: { type: Boolean,value: false},
+        secondaryProgress:{type:Number,value:0,notify:true},
+        value: {type: Number,notify:true},
+        instant:{type:Boolean,value:false}
+
+      },
+      behaviors: [Polymer.GunUiMixin],
+
+      ready: function() {
+        this.subscribe ? this._subscribe() : this._getCurrentState();
+      },
+      _subscribe: function() {
+        console.log('subscribe')
+          this._on({soul:this.soul,prop:this.prop},(v)=>{
+            if(this.value !== v) { this.value=v;}
+          });
+
+      },
+      _getCurrentState:function(){
+        this._read({soul:this.soul,prop:this.prop})
+            .then( (value) => {
+              this._fromGun = true;
+              value ? this.value=value : this.value=0;
+            })     
+      },
+      /*
+      * User adjusted slider
+      */
+      _userAction: function(e,detail) {
+         this.setValue(e.target.value);
+      },
+      _dragging(e){
+       if(this.instant){
+          this.setValue(e.detail.value);
+       }
+      },
+      /* update Gun */
+      setValue: function(val) {
+          this._update({
+              soul:this.soul,
+              prop:this.prop,
+              data:val
+          });
+      },
+    });
+  </script>
+</dom-module>
